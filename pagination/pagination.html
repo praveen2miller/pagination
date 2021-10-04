@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagination</title>
+</head>
+<body>
+  <div id="slides">
+ </div>
+  <div id="name">
+  </div>
+  <div class="pagination">
+      <ul></ul>
+  </div>
+</body>
+<style>
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body
+{
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 10px;
+}
+.image
+{
+  width:50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pagination ul
+{
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  display: flex;
+  flex-wrap: wrap;
+  background:black;
+  padding: 8px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pagination ul li{
+  color:bisque;
+  list-style: none;
+  line-height: 45px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s;
+}
+.pagination ul li.numb{
+  list-style: none;
+  height: 45px;
+  width: 45px;
+  margin: 0 3px;
+  line-height: 45px;
+}
+.pagination ul li.btn{
+  padding: 0 20px;
+  border-radius: 50px;
+}
+.pagination li.active,
+.pagination ul li.numb:hover,
+.pagination ul li:first-child:hover,
+.pagination ul li:last-child:hover{
+  color: #fff;
+  background:indianred;
+}
+</style>
+<script>
+
+const element = document.querySelector(".pagination ul");
+let totalPages = 3;
+let page = 1;
+
+var data = {
+  "images": [{
+          "img": "./1.jpg"
+      },
+      {
+          "img": "./2.jpg"
+  
+      },
+      {
+          "img": "./3.jpg"
+      } 
+  ] };
+element.innerHTML = createPagination(totalPages, page);
+function createPagination(totalPages, page)
+{
+  let liTag = '';
+  let active;
+  let beforePage = page - 1;
+  let afterPage = page + 1;
+  if(page > 1)
+  { 
+    liTag += `<li class="btn prev" onclick="createPagination(totalPages, ${page - 1})"><span>Prev</span></li>`;
+  }
+  for (var plength = beforePage; plength <= afterPage; plength++) 
+  {
+    if (plength > totalPages) 
+    {
+      continue;
+    }
+    if (plength == 0)
+   { 
+      plength = plength + 1;
+    }
+    if(page == plength)
+    { 
+      active = "active";
+      document.getElementById("slides").innerHTML=`<img src=${data.images[plength-1].img} class="image">`;
+    }
+    else
+    {
+      active = "";
+    }
+    liTag += `<li class="numb ${active}" onclick="createPagination(totalPages, ${plength})"><span>${plength}</span></li>`;
+  }
+
+  if (page < totalPages) 
+  { 
+    liTag += `<li class="btn next" onclick="createPagination(totalPages, ${page + 1})"><span>Next</span></li>`;
+  }
+  element.innerHTML = liTag;
+  return liTag; 
+}
+</script>
+</html>
